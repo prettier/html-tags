@@ -153,7 +153,7 @@ List of HTML tags.
 
 @example
 ```
-import htmlTags from '@prettier/html-tags;
+import htmlTags from "@prettier/html-tags";
 
 console.log(htmlTags);
 //=> ['a', 'abbr', 'acronym', …]
@@ -162,3 +162,4 @@ console.log(htmlTags);
 declare const htmlTags: readonly HtmlTags[];
 
 export default htmlTags;
+
