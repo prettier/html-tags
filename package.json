@@ -1,0 +1,58 @@
+{
+  "name": "@prettier/html-tags",
+  "version": "0.0.0",
+  "description": "List of HTML tags",
+  "license": "MIT",
+  "repository": "prettier/html-tags",
+  "author": {
+    "name": "fisker",
+    "email": "lionkay@gmail.com",
+    "url": "https://fiskercheung.com"
+  },
+  "type": "module",
+  "exports": {
+    "types": "./index.d.ts",
+    "require": "./index.json",
+    "default": "./index.js"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "fix": "prettier . --write",
+    "lint": "prettier . --check",
+    "build": "node scripts/build.js",
+    "test": "node --test test.js",
+    "test-coverage": "c8 yarn test",
+    "release": "release-it"
+  },
+  "files": [
+    "index.js",
+    "index.json",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "html",
+    "html5",
+    "tags",
+    "elements",
+    "list",
+    "whatwg",
+    "w3c"
+  ],
+  "devDependencies": {
+    "c8": "^10.1.3",
+    "cheerio": "1.0.0",
+    "outdent": "0.8.0",
+    "prettier": "3.5.3",
+    "release-it": "^19.0.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "c8": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
