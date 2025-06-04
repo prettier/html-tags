@@ -11,7 +11,7 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
-    if: github.event_name != 'schedule' || github.repository == 'prettier/html-ua-styles'
+    if: github.event_name != 'schedule' || github.repository == 'prettier/html-tags'
     runs-on: ubuntu-latest
     env:
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
