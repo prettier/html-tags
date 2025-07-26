@@ -6,6 +6,5 @@
   "github": {
     "release": true
   },
-  "hooks": {
-  }
+  "hooks": {}
 }
