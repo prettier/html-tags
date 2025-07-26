@@ -7,6 +7,5 @@
     "release": true
   },
   "hooks": {
-    "after:bump": "node --run build"
   }
 }
