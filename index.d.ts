@@ -115,6 +115,7 @@ type HtmlTags =
   | "search"
   | "section"
   | "select"
+  | "selectedcontent"
   | "shadow"
   | "slot"
   | "small"
