@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import assert from "node:assert/strict";
 import { outdent } from "outdent";
 import getHtmlTags from "./get-html-tags.js";
+import getHtmlVoidTags from "./get-html-void-tags.js";
 import {
   toIdentifier,
   toFileBaseName,
@@ -22,42 +23,29 @@ async function generateDataFiles(data) {
 }
 
 async function generateDefinitionsFile(data) {
-  const definitions = data
+  const content = data
     .map(
-      ({ name, definitionName, id, tags, sample }) =>
-        outdent`
-          type ${definitionName} =
-          ${tags.map((tag) => `  | "${tag}"`).join("\n")};
+      ({ name, id, definitionName, sample, tags }) => outdent`
+        type ${definitionName} =
+        ${tags.map((tag) => `  | '${tag}'`).join("\n")};
 
-          /**
-          List of ${name}.
+        /**
+        List of ${name}.
 
-          @example
-          \`\`\`
-          import {${id}} from "@prettier/html-tags";
+        @example
+        \`\`\`
+        import {${id}} from '@prettier/html-tags'
 
-          console.log(${id});
-          //=> ${sample}
-          \`\`\`
-          */
-        `,
+        console.log(${id});
+        //=> ${sample}
+        \`\`\`
+        */
+        export const ${id}: readonly ${definitionName}[];\n
+      `,
     )
     .join("\n\n");
 
-  const exports = data.map(
-    ({ id, definitionName }) => outdent`
-      export const ${id}: readonly ${definitionName}[];\n
-    `,
-  );
-
-  await writeFile(
-    new URL(`../index.d.ts`, import.meta.url),
-    outdent`
-      ${definitions}
-
-      ${exports.join("\n")}
-    `,
-  );
+  await writeFile(new URL(`../index.d.ts`, import.meta.url), content);
 }
 
 async function generateUsage(data) {
@@ -97,7 +85,7 @@ async function generateIndexFile(data) {
       ${data
         .map(
           ({ id, fileBaseName }) => outdent`
-            export {default as ${id}} from './${fileBaseName}' with {type: 'json'}
+            export {default as ${id}} from './${fileBaseName}.json' with {type: 'json'}
           `,
         )
         .join("\n")}
@@ -139,10 +127,10 @@ const data = await Promise.all(
     },
     {
       name: "HTML void tags",
-      getData: getHtmlTags,
+      getData: getHtmlVoidTags,
     },
   ].map(async ({ name, getData }) => {
-    const tags = await getHtmlTags();
+    const tags = await getData();
 
     return {
       name,

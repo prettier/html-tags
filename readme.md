@@ -28,5 +28,5 @@ console.log(htmlTags)
 //=> ['a', ,'abbr', ,'acronym', …]
 
 console.log(htmlVoidTags)
-//=> ['a', ,'abbr', ,'acronym', …]
+//=> ['area', ,'base', ,'br', …]
 <!-- Usage end -->

@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import * as cheerio from "cheerio";
-import { getText } from "./utilities.js";
+import { getText, uniqueAndSortTags } from "./utilities.js";
 
 async function getHtmlTagsFromHtmlSpecification() {
   const text = await getText([
@@ -77,14 +77,12 @@ async function getHtmlTags() {
   );
 
   let tags = [
-    ...new Set([
-      // https://www.w3.org/TR/2011/WD-html5-author-20110809/the-command-element.html
-      "command",
-      ...data.flat(),
-    ]),
-  ].sort();
+    // https://www.w3.org/TR/2011/WD-html5-author-20110809/the-command-element.html
+    "command",
+    ...data.flat(),
+  ];
 
-  return tags;
+  return uniqueAndSortTags(tags);
 }
 
 export default getHtmlTags;

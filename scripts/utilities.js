@@ -34,8 +34,7 @@ async function getTextFromUrl(url) {
 
   const text = await response.text();
 
-  await fs.mkdir(CACHE_DIRECTORY, { recursive: true });
-  await fs.writeFile(cacheFile, text);
+  writeFile(cacheFile, text);
 
   return text;
 }
@@ -74,7 +73,9 @@ function formatTagsSample(tags) {
   return `[${tags.slice(0, 3).map((tag) => `'${tag}', `)}…]`;
 }
 
-function writeFile(file, content) {
+async function writeFile(file, content) {
+  const directory = new URL("./", file);
+  await fs.mkdir(directory, { recursive: true });
   return fs.writeFile(file, content + "\n");
 }
 
@@ -92,6 +93,10 @@ async function updateJsonFile(file, process) {
   );
 }
 
+async function uniqueAndSortTags(tags) {
+  return [...new Set(tags)].toSorted();
+}
+
 export {
   getText,
   toIdentifier,
@@ -102,4 +107,5 @@ export {
   updateFile,
   writeJsonFile,
   updateJsonFile,
+  uniqueAndSortTags,
 };
