@@ -1,7 +1,7 @@
 {
   "name": "@prettier/html-tags",
   "version": "1.1.0",
-  "description": "List of HTML tags and HTML void tags",
+  "description": "List of HTML tags.",
   "license": "MIT",
   "repository": "prettier/html-tags",
   "author": {

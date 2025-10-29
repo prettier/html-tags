@@ -11,7 +11,7 @@
 [package_version_badge]: https://img.shields.io/npm/v/@prettier/html-tags.svg?style=flat-square
 [package_link]: https://www.npmjs.com/package/@prettier/html-tags
 
-> List of HTML tags and HTML void tags.
+> List of HTML tags.
 
 ## Install
 
