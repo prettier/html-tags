@@ -80,6 +80,13 @@ async function generateUsage(data) {
   });
 }
 
+async function generateIndexJsonFile(data) {
+  await writeFile(
+    new URL(`../index.json`, import.meta.url),
+    Object.fromEntries(data.map(({ id, tags }) => [id, tags])),
+  );
+}
+
 async function generateIndexFile(data) {
   await writeFile(
     new URL(`../index.js`, import.meta.url),
@@ -103,6 +110,7 @@ async function updatePackageJson(data) {
       exports: {
         ".": {
           types: "./index.d.ts",
+          require: "./index.json",
           default: "./index.js",
         },
         ...Object.fromEntries(
@@ -114,6 +122,7 @@ async function updatePackageJson(data) {
       },
       files: [
         "index.js",
+        "index.json",
         "index.d.ts",
         ...data.map(({ fileBaseName }) => `${fileBaseName}.json`),
       ],
@@ -150,6 +159,7 @@ await Promise.all(
     generateDataFiles,
     generateDefinitionsFile,
     generateUsage,
+    generateIndexJsonFile,
     generateIndexFile,
     updatePackageJson,
   ].map((function_) => function_(data)),

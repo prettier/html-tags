@@ -13,6 +13,7 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
+      "require": "./index.json",
       "default": "./index.js"
     },
     "./html-tags": "./html-tags.json",
@@ -29,6 +30,7 @@
   },
   "files": [
     "index.js",
+    "index.json",
     "index.d.ts",
     "html-tags.json",
     "html-void-tags.json"
