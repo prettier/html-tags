@@ -30,8 +30,8 @@
   "files": [
     "index.js",
     "index.d.ts",
-    "html-tags",
-    "html-void-tags"
+    "html-tags.json",
+    "html-void-tags.json"
   ],
   "keywords": [
     "html",

@@ -113,7 +113,7 @@ async function updatePackageJson(data) {
       files: [
         "index.js",
         "index.d.ts",
-        ...data.map(({ fileBaseName }) => fileBaseName),
+        ...data.map(({ fileBaseName }) => `${fileBaseName}.json`),
       ],
     }),
   );
