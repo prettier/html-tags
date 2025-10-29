@@ -1,8 +1,8 @@
-import fs from "node:fs/promises";
-import assert from "node:assert/strict";
-import { outdent } from "outdent";
-import getHtmlTags from "./get-html-tags.js";
-import getHtmlVoidTags from "./get-html-void-tags.js";
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { outdent } from 'outdent';
+import getHtmlTags from './get-html-tags.js';
+import getHtmlVoidTags from './get-html-void-tags.js';
 import {
   toIdentifier,
   toFileBaseName,
@@ -11,7 +11,7 @@ import {
   writeFile,
   writeJsonFile,
   updateJsonFile,
-} from "./utilities.js";
+} from './utilities.js';
 
 async function generateDataFiles(data) {
   await Promise.all(
@@ -25,6 +25,7 @@ async function generateDefinitionsFile(data) {
   const content = data
     .map(
       ({ name, id, sample, tags }) => outdent`
+
         /**
         List of ${name}.
 
@@ -37,11 +38,12 @@ async function generateDefinitionsFile(data) {
         \`\`\`
         */
         export const ${id}: readonly [
-        ${tags.map((tag) => `  '${tag}',`).join("\n")}
+        ${tags.map((tag) => `  '${tag}',`).join('\n')}
         ];
+
       `,
     )
-    .join("\n\n");
+    .join('\n\n');
 
   await writeFile(new URL(`../index.d.ts`, import.meta.url), content);
 }
@@ -49,15 +51,15 @@ async function generateDefinitionsFile(data) {
 async function generateUsage(data) {
   const readmeFile = new URL(`../readme.md`, import.meta.url);
   await updateFile(readmeFile, (readmeContent) => {
-    const START_MARK = "<!-- Usage start -->";
-    const END_MARK = "<!-- Usage end -->";
+    const START_MARK = '<!-- Usage start -->';
+    const END_MARK = '<!-- Usage end -->';
     const startMarkIndex = readmeContent.indexOf(START_MARK);
     const endMarkIndex = readmeContent.indexOf(END_MARK);
     assert.notEqual(startMarkIndex, -1);
     assert.notEqual(endMarkIndex, -1);
     const usageContent = outdent`
       \`\`\`
-      import {${data.map(({ id }) => id).join(", ")}} from '@prettier/html-tags'
+      import {${data.map(({ id }) => id).join(', ')}} from '@prettier/html-tags'
 
       ${data
         .map(
@@ -67,7 +69,7 @@ async function generateUsage(data) {
               //=> ${sample}
             `,
         )
-        .join("\n\n")}
+        .join('\n\n')}
       \`\`\`
     `;
     return outdent`
@@ -95,21 +97,21 @@ async function generateIndexFile(data) {
             export {default as ${id}} from './${fileBaseName}.json' with {type: 'json'}
           `,
         )
-        .join("\n")}
+        .join('\n')}
     `,
   );
 }
 
 async function updatePackageJson(data) {
   await updateJsonFile(
-    new URL("../package.json", import.meta.url),
+    new URL('../package.json', import.meta.url),
     (packageJson) => ({
       ...packageJson,
       exports: {
-        ".": {
-          types: "./index.d.ts",
-          require: "./index.json",
-          default: "./index.js",
+        '.': {
+          types: './index.d.ts',
+          require: './index.json',
+          default: './index.js',
         },
         ...Object.fromEntries(
           data.map(({ fileBaseName }) => [
@@ -119,9 +121,9 @@ async function updatePackageJson(data) {
         ),
       },
       files: [
-        "index.js",
-        "index.json",
-        "index.d.ts",
+        'index.js',
+        'index.json',
+        'index.d.ts',
         ...data.map(({ fileBaseName }) => `${fileBaseName}.json`),
       ],
     }),
@@ -131,11 +133,11 @@ async function updatePackageJson(data) {
 const data = await Promise.all(
   [
     {
-      name: "HTML tags",
+      name: 'HTML tags',
       getData: getHtmlTags,
     },
     {
-      name: "HTML void tags",
+      name: 'HTML void tags',
       getData: getHtmlVoidTags,
     },
   ].map(async ({ name, getData }) => {

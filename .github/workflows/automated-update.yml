@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # “At 00:00 on Friday.” https://crontab.guru/#0_0_*_*_5
-    - cron: "0 0 * * 5"
+    - cron: '0 0 * * 5'
 
 jobs:
   update:

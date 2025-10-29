@@ -1,10 +1,10 @@
-import assert from "node:assert";
-import * as cheerio from "cheerio";
-import { getText, uniqueAndSortTags } from "./utilities.js";
+import assert from 'node:assert';
+import * as cheerio from 'cheerio';
+import { getText, uniqueAndSortTags } from './utilities.js';
 
 async function getHtmlVoidTagsFromHtmlSpecificationParsing() {
   const text = await getText(
-    "https://html.spec.whatwg.org/multipage/parsing.html",
+    'https://html.spec.whatwg.org/multipage/parsing.html',
   );
   const $ = cheerio.load(text);
   const container = $(
@@ -12,7 +12,7 @@ async function getHtmlVoidTagsFromHtmlSpecificationParsing() {
   );
   assert.equal(container.length, 1);
 
-  const elements = $("code", container);
+  const elements = $('code', container);
   assert.notEqual(elements.length, 0);
 
   return Array.from(elements, (element) => $(element).text().trim());
@@ -20,7 +20,7 @@ async function getHtmlVoidTagsFromHtmlSpecificationParsing() {
 
 async function getHtmlVoidTagsFromHtmlSpecificationSyntax() {
   const text = await getText(
-    "https://html.spec.whatwg.org/multipage/syntax.html",
+    'https://html.spec.whatwg.org/multipage/syntax.html',
   );
   const $ = cheerio.load(text);
   const elements = $('dt:has(dfn[id="void-elements"]) + dd > code');
@@ -39,10 +39,10 @@ async function getHtmlVoidTags() {
   );
   return uniqueAndSortTags([
     // https://www.w3.org/TR/2011/WD-html5-author-20110809/the-command-element.html
-    "command",
+    'command',
     // From https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements
     // An ancient and poorly supported precursor to the `<img>` element. It should not be used.
-    "image",
+    'image',
     ...data.flat(),
   ]);
 }
