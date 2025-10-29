@@ -1,8 +1,8 @@
-import fs from 'node:fs/promises';
-import assert from 'node:assert/strict';
-import {outdent} from 'outdent';
-import getHtmlTags from './get-html-tags.js';
-import getHtmlVoidTags from './get-html-void-tags.js';
+import fs from 'node:fs/promises'
+import assert from 'node:assert/strict'
+import {outdent} from 'outdent'
+import getHtmlTags from './get-html-tags.js'
+import getHtmlVoidTags from './get-html-void-tags.js'
 import {
   toIdentifier,
   toFileBaseName,
@@ -11,14 +11,14 @@ import {
   writeFile,
   writeJsonFile,
   updateJsonFile,
-} from './utilities.js';
+} from './utilities.js'
 
 async function generateDataFiles(data) {
   await Promise.all(
     data.map(({fileBaseName, tags}) =>
       writeJsonFile(new URL(`../${fileBaseName}.json`, import.meta.url), tags),
     ),
-  );
+  )
 }
 
 async function generateDefinitionsFile(data) {
@@ -41,20 +41,20 @@ async function generateDefinitionsFile(data) {
         ];
       `,
     )
-    .join('\n\n');
+    .join('\n\n')
 
-  await writeFile(new URL(`../index.d.ts`, import.meta.url), content);
+  await writeFile(new URL(`../index.d.ts`, import.meta.url), content)
 }
 
 async function generateUsage(data) {
-  const readmeFile = new URL(`../readme.md`, import.meta.url);
+  const readmeFile = new URL(`../readme.md`, import.meta.url)
   await updateFile(readmeFile, (readmeContent) => {
-    const START_MARK = '<!-- Usage start -->';
-    const END_MARK = '<!-- Usage end -->';
-    const startMarkIndex = readmeContent.indexOf(START_MARK);
-    const endMarkIndex = readmeContent.indexOf(END_MARK);
-    assert.notEqual(startMarkIndex, -1);
-    assert.notEqual(endMarkIndex, -1);
+    const START_MARK = '<!-- Usage start -->'
+    const END_MARK = '<!-- Usage end -->'
+    const startMarkIndex = readmeContent.indexOf(START_MARK)
+    const endMarkIndex = readmeContent.indexOf(END_MARK)
+    assert.notEqual(startMarkIndex, -1)
+    assert.notEqual(endMarkIndex, -1)
     const usageContent = outdent`
 
       \`\`\`
@@ -71,20 +71,20 @@ async function generateUsage(data) {
         .join('\n\n')}
       \`\`\`
 
-    `;
+    `
     return outdent`
       ${readmeContent.slice(0, startMarkIndex + START_MARK.length)}
       ${usageContent}
       ${readmeContent.slice(endMarkIndex)}
-    `.trimEnd();
-  });
+    `.trimEnd()
+  })
 }
 
 async function generateIndexJsonFile(data) {
   await writeJsonFile(
     new URL(`../index.json`, import.meta.url),
     Object.fromEntries(data.map(({id, tags}) => [id, tags])),
-  );
+  )
 }
 
 async function generateIndexFile(data) {
@@ -99,7 +99,7 @@ async function generateIndexFile(data) {
         )
         .join('\n')}
     `,
-  );
+  )
 }
 
 async function updatePackageJson(data) {
@@ -127,7 +127,7 @@ async function updatePackageJson(data) {
         ...data.map(({fileBaseName}) => `${fileBaseName}.json`),
       ],
     }),
-  );
+  )
 }
 
 const data = await Promise.all(
@@ -141,7 +141,7 @@ const data = await Promise.all(
       getData: getHtmlVoidTags,
     },
   ].map(async ({name, getData}) => {
-    const tags = await getData();
+    const tags = await getData()
 
     return {
       name,
@@ -149,9 +149,9 @@ const data = await Promise.all(
       fileBaseName: toFileBaseName(name),
       tags,
       sample: formatTagsSample(tags),
-    };
+    }
   }),
-);
+)
 
 await Promise.all(
   [
@@ -162,4 +162,4 @@ await Promise.all(
     generateIndexFile,
     updatePackageJson,
   ].map((function_) => function_(data)),
-);
+)

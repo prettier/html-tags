@@ -1,4 +1,4 @@
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 
 export default [
   {
@@ -7,4 +7,4 @@ export default [
       'unicorn/template-indent': 'error',
     },
   },
-];
+]

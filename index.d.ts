@@ -160,7 +160,7 @@ export const htmlTags: readonly [
   'video',
   'wbr',
   'xmp',
-];
+]
 
 /**
 List of HTML void tags.
@@ -194,4 +194,4 @@ export const htmlVoidTags: readonly [
   'source',
   'track',
   'wbr',
-];
+]
