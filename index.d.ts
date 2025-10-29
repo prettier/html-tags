@@ -162,7 +162,6 @@ console.log(htmlTags);
 */
 export const htmlTags: readonly HtmlTags[];
 
-
 type HtmlVoidTags =
   | 'area'
   | 'base'
@@ -190,4 +189,3 @@ console.log(htmlVoidTags);
 ```
 */
 export const htmlVoidTags: readonly HtmlVoidTags[];
-

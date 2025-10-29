@@ -40,7 +40,7 @@ async function generateDefinitionsFile(data) {
         //=> ${sample}
         \`\`\`
         */
-        export const ${id}: readonly ${definitionName}[];\n
+        export const ${id}: readonly ${definitionName}[];
       `,
     )
     .join("\n\n");
