@@ -59,7 +59,7 @@ async function generateUsage(data) {
     assert.notEqual(endMarkIndex, -1);
     const usageContent = outdent`
       \`\`\`
-      import {${data.map(({ id }) => id)}} from '@prettier/html-tags'
+      import {${data.map(({ id }) => id).join(", ")}} from '@prettier/html-tags'
 
       ${data
         .map(

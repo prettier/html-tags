@@ -23,7 +23,7 @@ yarn add @prettier/html-tags
 
 <!-- Usage start -->
 ```
-import {htmlTags,htmlVoidTags} from '@prettier/html-tags'
+import {htmlTags, htmlVoidTags} from '@prettier/html-tags'
 
 console.log(htmlTags)
 //=> ['a', ,'abbr', ,'acronym', …]
