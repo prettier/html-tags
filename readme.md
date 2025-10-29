@@ -11,7 +11,7 @@
 [package_version_badge]: https://img.shields.io/npm/v/@prettier/html-tags.svg?style=flat-square
 [package_link]: https://www.npmjs.com/package/@prettier/html-tags
 
-> List of HTML tags.
+> List of HTML tags and HTML void tags.
 
 ## Install
 
@@ -21,9 +21,16 @@ yarn add @prettier/html-tags
 
 ## Usage
 
-```js
-import htmlTags from '@prettier/html-tags;
+<!-- Usage start -->
 
-console.log(htmlTags);
-//=> ['a', 'abbr', 'acronym', …]
 ```
+import {htmlTags, htmlVoidTags} from '@prettier/html-tags'
+
+console.log(htmlTags)
+//=> ['a', 'abbr', 'acronym', …]
+
+console.log(htmlVoidTags)
+//=> ['area', 'base', 'basefont', …]
+```
+
+<!-- Usage end -->

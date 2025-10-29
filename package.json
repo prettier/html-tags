@@ -1,7 +1,7 @@
 {
   "name": "@prettier/html-tags",
   "version": "1.1.0",
-  "description": "List of HTML tags",
+  "description": "List of HTML tags and HTML void tags",
   "license": "MIT",
   "repository": "prettier/html-tags",
   "author": {
@@ -11,9 +11,13 @@
   },
   "type": "module",
   "exports": {
-    "types": "./index.d.ts",
-    "require": "./index.json",
-    "default": "./index.js"
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.json",
+      "default": "./index.js"
+    },
+    "./html-tags": "./html-tags.json",
+    "./html-void-tags": "./html-void-tags.json"
   },
   "sideEffects": false,
   "scripts": {
@@ -27,7 +31,9 @@
   "files": [
     "index.js",
     "index.json",
-    "index.d.ts"
+    "index.d.ts",
+    "html-tags.json",
+    "html-void-tags.json"
   ],
   "keywords": [
     "html",
@@ -40,10 +46,12 @@
   ],
   "devDependencies": {
     "c8": "^10.1.3",
-    "cheerio": "1.0.0",
+    "cheerio": "1.1.2",
+    "eslint": "^9.38.0",
+    "eslint-plugin-unicorn": "^62.0.0",
     "outdent": "0.8.0",
-    "prettier": "3.5.3",
-    "release-it": "^19.0.1"
+    "prettier": "3.6.2",
+    "release-it": "^19.0.5"
   },
   "publishConfig": {
     "access": "public",

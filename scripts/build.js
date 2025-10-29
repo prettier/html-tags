@@ -1,142 +1,165 @@
-import fs from "node:fs/promises";
-import * as cheerio from "cheerio";
-import { outdent } from "outdent";
+import fs from 'node:fs/promises'
+import assert from 'node:assert/strict'
+import {outdent} from 'outdent'
+import getHtmlTags from './get-html-tags.js'
+import getHtmlVoidTags from './get-html-void-tags.js'
+import {
+  toIdentifier,
+  toFileBaseName,
+  formatTagsSample,
+  updateFile,
+  writeFile,
+  writeJsonFile,
+  updateJsonFile,
+} from './utilities.js'
 
-const CACHE_DIRECTORY = new URL("../.cache/", import.meta.url);
+async function generateDataFiles(data) {
+  await Promise.all(
+    data.map(({fileBaseName, tags}) =>
+      writeJsonFile(new URL(`../${fileBaseName}.json`, import.meta.url), tags),
+    ),
+  )
+}
 
-const getText = async (url) => {
-  const cacheFile = new URL(
-    url.replaceAll(/[^a-zA-Z\d\.]/g, "-"),
-    CACHE_DIRECTORY,
-  );
+async function generateDefinitionsFile(data) {
+  const content = data
+    .map(
+      ({name, id, sample, tags}) => outdent`
+        /**
+        List of ${name}.
 
-  let stat;
+        @example
+        \`\`\`
+        import {${id}} from '@prettier/html-tags'
 
-  try {
-    stat = await fs.stat(cacheFile);
-  } catch {}
+        console.log(${id})
+        //=> ${sample}
+        \`\`\`
+        */
+        export const ${id}: readonly [
+        ${tags.map((tag) => `  '${tag}',`).join('\n')}
+        ]
+      `,
+    )
+    .join('\n\n')
 
-  if (stat) {
-    if (Date.now() - stat.mtimeMs < /* 10 hours */ 10 * 60 * 60 * 1000) {
-      return fs.readFile(cacheFile, "utf8");
-    }
+  await writeFile(new URL(`../index.d.ts`, import.meta.url), content)
+}
 
-    await fs.rm(cacheFile);
-  }
+async function generateUsage(data) {
+  const readmeFile = new URL(`../readme.md`, import.meta.url)
+  await updateFile(readmeFile, (readmeContent) => {
+    const START_MARK = '<!-- Usage start -->'
+    const END_MARK = '<!-- Usage end -->'
+    const startMarkIndex = readmeContent.indexOf(START_MARK)
+    const endMarkIndex = readmeContent.indexOf(END_MARK)
+    assert.notEqual(startMarkIndex, -1)
+    assert.notEqual(endMarkIndex, -1)
+    const usageContent = outdent`
 
-  const response = await fetch(url);
+      \`\`\`
+      import {${data.map(({id}) => id).join(', ')}} from '@prettier/html-tags'
 
-  if (!response.ok) {
-    throw new Error(`Fetch '${url}' failed.`);
-  }
+      ${data
+        .map(
+          ({id, sample}) =>
+            outdent`
+              console.log(${id})
+              //=> ${sample}
+            `,
+        )
+        .join('\n\n')}
+      \`\`\`
 
-  const text = await response.text();
+    `
+    return outdent`
+      ${readmeContent.slice(0, startMarkIndex + START_MARK.length)}
+      ${usageContent}
+      ${readmeContent.slice(endMarkIndex)}
+    `.trimEnd()
+  })
+}
 
-  await fs.mkdir(CACHE_DIRECTORY, { recursive: true });
-  await fs.writeFile(cacheFile, text);
+async function generateIndexJsonFile(data) {
+  await writeJsonFile(
+    new URL(`../index.json`, import.meta.url),
+    Object.fromEntries(data.map(({id, tags}) => [id, tags])),
+  )
+}
 
-  return text;
-};
+async function generateIndexFile(data) {
+  await writeFile(
+    new URL(`../index.js`, import.meta.url),
+    outdent`
+      ${data
+        .map(
+          ({id, fileBaseName}) => outdent`
+            export {default as ${id}} from './${fileBaseName}.json' with {type: 'json'}
+          `,
+        )
+        .join('\n')}
+    `,
+  )
+}
+
+async function updatePackageJson(data) {
+  await updateJsonFile(
+    new URL('../package.json', import.meta.url),
+    (packageJson) => ({
+      ...packageJson,
+      exports: {
+        '.': {
+          types: './index.d.ts',
+          require: './index.json',
+          default: './index.js',
+        },
+        ...Object.fromEntries(
+          data.map(({fileBaseName}) => [
+            `./${fileBaseName}`,
+            `./${fileBaseName}.json`,
+          ]),
+        ),
+      },
+      files: [
+        'index.js',
+        'index.json',
+        'index.d.ts',
+        ...data.map(({fileBaseName}) => `${fileBaseName}.json`),
+      ],
+    }),
+  )
+}
 
 const data = await Promise.all(
   [
-    async () => {
-      const text = await Promise.any([
-        getText("https://raw.githubusercontent.com/whatwg/html/HEAD/source"),
-        getText("https://cdn.jsdelivr.net/gh/whatwg/html/source"),
-      ]);
-      const $ = cheerio.load(text);
-
-      return Array.from($("dfn[element] > code"), (element) =>
-        $(element).text().trim(),
-      );
+    {
+      name: 'HTML tags',
+      getData: getHtmlTags,
     },
-    async () => {
-      const text = await getText(
-        "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements",
-      );
-      const $ = cheerio.load(text);
-
-      return Array.from($("tr > td:first-child > code"), (element) => {
-        const text = $(element).text().trim();
-        if (!/^<(?:[a-z]+|h[123456])>$/.test(text)) {
-          return;
-        }
-
-        return text.slice(1, -1);
-      }).filter(Boolean);
+    {
+      name: 'HTML void tags',
+      getData: getHtmlVoidTags,
     },
-    async () => {
-      const text = await getText(
-        "https://html.spec.whatwg.org/multipage/indices.html",
-      );
-      const $ = cheerio.load(text);
-      const table = $("#elements-3 ~ table")[0];
+  ].map(async ({name, getData}) => {
+    const tags = await getData()
 
-      return Array.from($("th:first-child code", table), (element) =>
-        $(element).text().trim(),
-      );
-    },
-    async () => {
-      const text = await getText(
-        "https://html.spec.whatwg.org/multipage/obsolete.html",
-      );
-      const $ = cheerio.load(text);
-      const container = $("#non-conforming-features ~ dl")[0];
+    return {
+      name,
+      id: toIdentifier(name),
+      fileBaseName: toFileBaseName(name),
+      tags,
+      sample: formatTagsSample(tags),
+    }
+  }),
+)
 
-      return Array.from($("> dt > dfn > code", container), (element) =>
-        $(element).text().trim(),
-      );
-    },
-    async () => {
-      const text = await Promise.any([
-        getText(
-          "https://raw.githubusercontent.com/w3c/elements-of-html/HEAD/elements.json",
-        ),
-        getText(
-          "https://cdn.jsdelivr.net/gh/w3c/elements-of-html/elements.json",
-        ),
-      ]);
-
-      return JSON.parse(text)
-        .map(({ element }) => element)
-        .filter((tagName) => /^(?:[a-z]+|h[123456])$/.test(tagName));
-    },
-  ].map((function_) => function_()),
-);
-
-let tags = [
-  ...new Set([
-    // https://www.w3.org/TR/2011/WD-html5-author-20110809/the-command-element.html
-    "command",
-    ...data.flat(),
-  ]),
-].sort();
-
-await fs.writeFile(
-  new URL(`../index.json`, import.meta.url),
-  JSON.stringify(tags, undefined, 2) + "\n",
-);
-
-await fs.writeFile(
-  new URL(`../index.d.ts`, import.meta.url),
-  outdent`
-    type HtmlTags =
-    ${tags.map((tag) => `  | "${tag}"`).join("\n")};
-
-    /**
-    List of HTML tags.
-
-    @example
-    \`\`\`
-    import htmlTags from "@prettier/html-tags";
-
-    console.log(htmlTags);
-    //=> ['a', 'abbr', 'acronym', …]
-    \`\`\`
-    */
-    declare const htmlTags: readonly HtmlTags[];
-
-    export default htmlTags;\n
-	`,
-);
+await Promise.all(
+  [
+    generateDataFiles,
+    generateDefinitionsFile,
+    generateUsage,
+    generateIndexJsonFile,
+    generateIndexFile,
+    updatePackageJson,
+  ].map((function_) => function_(data)),
+)
