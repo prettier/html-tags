@@ -20,9 +20,12 @@ test("Html Tags", () => {
 test("HTML Void Tags", () => {
   assert.ok(Array.isArray(htmlVoidTags));
   assert.equal(new Set(htmlVoidTags).size, htmlVoidTags.length);
+  // https://html.spec.whatwg.org/multipage/parsing.html#serialising-html-fragments
+  assert.ok(htmlTags.includes("basefont"));
   assert.ok(htmlVoidTags.includes("img"));
 
   for (const tag of htmlVoidTags) {
+        assert.ok(htmlTags.includes(tag))
     assert.ok(/^[a-z]+$/.test(tag), tag);
   }
 });

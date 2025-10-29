@@ -9,9 +9,10 @@ async function getHtmlTagsFromHtmlSpecification() {
   ]);
   const $ = cheerio.load(text);
 
-  return Array.from($("dfn[element] > code"), (element) =>
-    $(element).text().trim(),
-  );
+  const elements = $("dfn[element] > code");
+  assert.notEqual(elements.length, 0);
+
+  return Array.from(elements, (element) => $(element).text().trim());
 }
 
 async function getHtmlTagsFromMdn() {
@@ -20,7 +21,20 @@ async function getHtmlTagsFromMdn() {
   );
   const $ = cheerio.load(text);
 
-  return Array.from($("tr > td:first-child > code"), (element) => {
+  const elements = $("tr > td:first-child > :is(a,code)");
+  assert.notEqual(elements.length, 0);
+
+  return Array.from(elements, (element) => {
+    if (
+      !(
+        element.name === "code" ||
+        (element.name === "a" &&
+          element.attribs.href.includes("/docs/Web/HTML/Reference/Elements/"))
+      )
+    ) {
+      return;
+    }
+
     const text = $(element).text().trim();
     if (!/^<(?:[a-z]+|h[123456])>$/.test(text)) {
       return;
@@ -35,11 +49,16 @@ async function getHtmlTagsFromHtmlSpecificationIndices() {
     "https://html.spec.whatwg.org/multipage/indices.html",
   );
   const $ = cheerio.load(text);
-  const table = $("#elements-3 ~ table")[0];
 
-  return Array.from($("th:first-child code", table), (element) =>
-    $(element).text().trim(),
-  );
+  const tables = $("#elements-3 ~ table");
+  assert.notEqual(tables.length, 0);
+
+  const table = tables[0];
+
+  const elements = $("th:first-child code", table);
+  assert.notEqual(elements.length, 0);
+
+  return Array.from(elements, (element) => $(element).text().trim());
 }
 
 async function getHtmlTagsFromHtmlSpecificationObsolete() {
@@ -47,11 +66,17 @@ async function getHtmlTagsFromHtmlSpecificationObsolete() {
     "https://html.spec.whatwg.org/multipage/obsolete.html",
   );
   const $ = cheerio.load(text);
-  const container = $("#non-conforming-features ~ dl")[0];
 
-  return Array.from($("> dt > dfn > code", container), (element) =>
-    $(element).text().trim(),
-  );
+  const dls = $("#non-conforming-features ~ dl");
+
+  assert.notEqual(dls.length, 0);
+
+  const container = dls[0];
+
+  const elements = $("> dt > dfn > code", container);
+  assert.notEqual(elements.length, 0);
+
+  return Array.from(elements, (element) => $(element).text().trim());
 }
 
 async function getHtmlTagsFromW3c() {
@@ -60,9 +85,10 @@ async function getHtmlTagsFromW3c() {
     "https://cdn.jsdelivr.net/gh/w3c/elements-of-html/elements.json",
   ]);
 
-  return JSON.parse(text)
-    .map(({ element }) => element)
-    .filter((tagName) => /^(?:[a-z]+|h[123456])$/.test(tagName));
+  const elements = JSON.parse(text).map(({ element }) => element);
+  assert.notEqual(elements.length, 0);
+
+  return elements.filter((tagName) => /^(?:[a-z]+|h[123456])$/.test(tagName));
 }
 
 async function getHtmlTags() {
