@@ -5,7 +5,7 @@ List of HTML tags.
 ```
 import {htmlTags} from '@prettier/html-tags'
 
-console.log(htmlTags);
+console.log(htmlTags)
 //=> ['a', 'abbr', 'acronym', …]
 ```
 */
@@ -169,7 +169,7 @@ List of HTML void tags.
 ```
 import {htmlVoidTags} from '@prettier/html-tags'
 
-console.log(htmlVoidTags);
+console.log(htmlVoidTags)
 //=> ['area', 'base', 'basefont', …]
 ```
 */

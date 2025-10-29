@@ -32,13 +32,13 @@ async function generateDefinitionsFile(data) {
         \`\`\`
         import {${id}} from '@prettier/html-tags'
 
-        console.log(${id});
+        console.log(${id})
         //=> ${sample}
         \`\`\`
         */
         export const ${id}: readonly [
         ${tags.map((tag) => `  '${tag}',`).join('\n')}
-        ];
+        ]
       `,
     )
     .join('\n\n')
