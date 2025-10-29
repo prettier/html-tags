@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { htmlTags, htmlVoidTags } from "./index.js";
 
-test("Html Tags", () => {
+test("HTML Tags", () => {
   assert.ok(Array.isArray(htmlTags));
   assert.equal(new Set(htmlTags).size, htmlTags.length);
   // W3C https://raw.githubusercontent.com/w3c/elements-of-html/HEAD/elements.json
@@ -25,7 +25,7 @@ test("HTML Void Tags", () => {
   assert.ok(htmlVoidTags.includes("img"));
 
   for (const tag of htmlVoidTags) {
-        assert.ok(htmlTags.includes(tag))
+    assert.ok(htmlTags.includes(tag));
     assert.ok(/^[a-z]+$/.test(tag), tag);
   }
 });
