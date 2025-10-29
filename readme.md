@@ -21,9 +21,12 @@ yarn add @prettier/html-tags
 
 ## Usage
 
-```js
-import htmlTags from '@prettier/html-tags;
+<!-- Usage start -->
+import {htmlTags,htmlVoidTags} from '@prettier/html-tags'
 
-console.log(htmlTags);
-//=> ['a', 'abbr', 'acronym', …]
-```
+console.log(htmlTags)
+//=> ['a', ,'abbr', ,'acronym', …]
+
+console.log(htmlVoidTags)
+//=> ['a', ,'abbr', ,'acronym', …]
+<!-- Usage end -->
