@@ -81,7 +81,7 @@ async function generateUsage(data) {
 }
 
 async function generateIndexJsonFile(data) {
-  await writeFile(
+  await writeJsonFile(
     new URL(`../index.json`, import.meta.url),
     Object.fromEntries(data.map(({ id, tags }) => [id, tags])),
   );
