@@ -29,6 +29,6 @@ console.log(htmlTags)
 //=> ['a', 'abbr', 'acronym', …]
 
 console.log(htmlVoidTags)
-//=> ['area', 'base', 'br', …]
+//=> ['area', 'base', 'basefont', …]
 ```
 <!-- Usage end -->

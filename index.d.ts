@@ -169,20 +169,25 @@ List of HTML void tags.
 import {htmlVoidTags} from '@prettier/html-tags'
 
 console.log(htmlVoidTags);
-//=> ['area', 'base', 'br', …]
+//=> ['area', 'base', 'basefont', …]
 ```
 */
 export const htmlVoidTags: readonly [
   'area',
   'base',
+  'basefont',
+  'bgsound',
   'br',
   'col',
   'embed',
+  'frame',
   'hr',
   'img',
   'input',
+  'keygen',
   'link',
   'meta',
+  'param',
   'source',
   'track',
   'wbr',
