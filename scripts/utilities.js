@@ -70,7 +70,12 @@ function toDefinitionName(name) {
 }
 
 function formatTagsSample(tags) {
-  return `[${tags.slice(0, 3).map((tag) => `'${tag}', `)}…]`;
+  const samples = tags.slice(0, 3).map((tag) => `'${tag}'`);
+  if (tags.length > 3) {
+    samples.push("…");
+  }
+
+  return `[${samples.join(", ")}]`;
 }
 
 async function writeFile(file, content) {
