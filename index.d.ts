@@ -1,154 +1,3 @@
-type HtmlTags =
-  | 'a'
-  | 'abbr'
-  | 'acronym'
-  | 'address'
-  | 'applet'
-  | 'area'
-  | 'article'
-  | 'aside'
-  | 'audio'
-  | 'b'
-  | 'base'
-  | 'basefont'
-  | 'bdi'
-  | 'bdo'
-  | 'bgsound'
-  | 'big'
-  | 'blink'
-  | 'blockquote'
-  | 'body'
-  | 'br'
-  | 'button'
-  | 'canvas'
-  | 'caption'
-  | 'center'
-  | 'cite'
-  | 'code'
-  | 'col'
-  | 'colgroup'
-  | 'command'
-  | 'content'
-  | 'data'
-  | 'datalist'
-  | 'dd'
-  | 'del'
-  | 'details'
-  | 'dfn'
-  | 'dialog'
-  | 'dir'
-  | 'div'
-  | 'dl'
-  | 'dt'
-  | 'em'
-  | 'embed'
-  | 'fieldset'
-  | 'figcaption'
-  | 'figure'
-  | 'font'
-  | 'footer'
-  | 'form'
-  | 'frame'
-  | 'frameset'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'head'
-  | 'header'
-  | 'hgroup'
-  | 'hr'
-  | 'html'
-  | 'i'
-  | 'iframe'
-  | 'image'
-  | 'img'
-  | 'input'
-  | 'ins'
-  | 'isindex'
-  | 'kbd'
-  | 'keygen'
-  | 'label'
-  | 'legend'
-  | 'li'
-  | 'link'
-  | 'listing'
-  | 'main'
-  | 'map'
-  | 'mark'
-  | 'marquee'
-  | 'math'
-  | 'menu'
-  | 'menuitem'
-  | 'meta'
-  | 'meter'
-  | 'multicol'
-  | 'nav'
-  | 'nextid'
-  | 'nobr'
-  | 'noembed'
-  | 'noframes'
-  | 'noscript'
-  | 'object'
-  | 'ol'
-  | 'optgroup'
-  | 'option'
-  | 'output'
-  | 'p'
-  | 'param'
-  | 'picture'
-  | 'plaintext'
-  | 'pre'
-  | 'progress'
-  | 'q'
-  | 'rb'
-  | 'rbc'
-  | 'rp'
-  | 'rt'
-  | 'rtc'
-  | 'ruby'
-  | 's'
-  | 'samp'
-  | 'script'
-  | 'search'
-  | 'section'
-  | 'select'
-  | 'selectedcontent'
-  | 'shadow'
-  | 'slot'
-  | 'small'
-  | 'source'
-  | 'spacer'
-  | 'span'
-  | 'strike'
-  | 'strong'
-  | 'style'
-  | 'sub'
-  | 'summary'
-  | 'sup'
-  | 'svg'
-  | 'table'
-  | 'tbody'
-  | 'td'
-  | 'template'
-  | 'textarea'
-  | 'tfoot'
-  | 'th'
-  | 'thead'
-  | 'time'
-  | 'title'
-  | 'tr'
-  | 'track'
-  | 'tt'
-  | 'u'
-  | 'ul'
-  | 'var'
-  | 'video'
-  | 'wbr'
-  | 'xmp';
-
 /**
 List of HTML tags.
 
@@ -160,22 +9,157 @@ console.log(htmlTags);
 //=> ['a', 'abbr', 'acronym', …]
 ```
 */
-export const htmlTags: readonly HtmlTags[];
-
-type HtmlVoidTags =
-  | 'area'
-  | 'base'
-  | 'br'
-  | 'col'
-  | 'embed'
-  | 'hr'
-  | 'img'
-  | 'input'
-  | 'link'
-  | 'meta'
-  | 'source'
-  | 'track'
-  | 'wbr';
+export const htmlTags: readonly [
+  'a',
+  'abbr',
+  'acronym',
+  'address',
+  'applet',
+  'area',
+  'article',
+  'aside',
+  'audio',
+  'b',
+  'base',
+  'basefont',
+  'bdi',
+  'bdo',
+  'bgsound',
+  'big',
+  'blink',
+  'blockquote',
+  'body',
+  'br',
+  'button',
+  'canvas',
+  'caption',
+  'center',
+  'cite',
+  'code',
+  'col',
+  'colgroup',
+  'command',
+  'content',
+  'data',
+  'datalist',
+  'dd',
+  'del',
+  'details',
+  'dfn',
+  'dialog',
+  'dir',
+  'div',
+  'dl',
+  'dt',
+  'em',
+  'embed',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'font',
+  'footer',
+  'form',
+  'frame',
+  'frameset',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'head',
+  'header',
+  'hgroup',
+  'hr',
+  'html',
+  'i',
+  'iframe',
+  'image',
+  'img',
+  'input',
+  'ins',
+  'isindex',
+  'kbd',
+  'keygen',
+  'label',
+  'legend',
+  'li',
+  'link',
+  'listing',
+  'main',
+  'map',
+  'mark',
+  'marquee',
+  'math',
+  'menu',
+  'menuitem',
+  'meta',
+  'meter',
+  'multicol',
+  'nav',
+  'nextid',
+  'nobr',
+  'noembed',
+  'noframes',
+  'noscript',
+  'object',
+  'ol',
+  'optgroup',
+  'option',
+  'output',
+  'p',
+  'param',
+  'picture',
+  'plaintext',
+  'pre',
+  'progress',
+  'q',
+  'rb',
+  'rbc',
+  'rp',
+  'rt',
+  'rtc',
+  'ruby',
+  's',
+  'samp',
+  'script',
+  'search',
+  'section',
+  'select',
+  'selectedcontent',
+  'shadow',
+  'slot',
+  'small',
+  'source',
+  'spacer',
+  'span',
+  'strike',
+  'strong',
+  'style',
+  'sub',
+  'summary',
+  'sup',
+  'svg',
+  'table',
+  'tbody',
+  'td',
+  'template',
+  'textarea',
+  'tfoot',
+  'th',
+  'thead',
+  'time',
+  'title',
+  'tr',
+  'track',
+  'tt',
+  'u',
+  'ul',
+  'var',
+  'video',
+  'wbr',
+  'xmp',
+];
 
 /**
 List of HTML void tags.
@@ -188,4 +172,18 @@ console.log(htmlVoidTags);
 //=> ['area', 'base', 'br', …]
 ```
 */
-export const htmlVoidTags: readonly HtmlVoidTags[];
+export const htmlVoidTags: readonly [
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'source',
+  'track',
+  'wbr',
+];

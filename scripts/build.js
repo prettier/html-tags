@@ -6,7 +6,6 @@ import getHtmlVoidTags from "./get-html-void-tags.js";
 import {
   toIdentifier,
   toFileBaseName,
-  toDefinitionName,
   formatTagsSample,
   updateFile,
   writeFile,
@@ -25,10 +24,7 @@ async function generateDataFiles(data) {
 async function generateDefinitionsFile(data) {
   const content = data
     .map(
-      ({ name, id, definitionName, sample, tags }) => outdent`
-        type ${definitionName} =
-        ${tags.map((tag) => `  | '${tag}'`).join("\n")};
-
+      ({ name, id, sample, tags }) => outdent`
         /**
         List of ${name}.
 
@@ -40,7 +36,9 @@ async function generateDefinitionsFile(data) {
         //=> ${sample}
         \`\`\`
         */
-        export const ${id}: readonly ${definitionName}[];
+        export const ${id}: readonly [
+        ${tags.map((tag) => `  '${tag}',`).join("\n")}
+        ];
       `,
     )
     .join("\n\n");
@@ -147,7 +145,6 @@ const data = await Promise.all(
       name,
       id: toIdentifier(name),
       fileBaseName: toFileBaseName(name),
-      definitionName: toDefinitionName(name),
       tags,
       sample: formatTagsSample(tags),
     };

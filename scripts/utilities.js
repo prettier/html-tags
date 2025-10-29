@@ -106,7 +106,6 @@ export {
   getText,
   toIdentifier,
   toFileBaseName,
-  toDefinitionName,
   formatTagsSample,
   writeFile,
   updateFile,
