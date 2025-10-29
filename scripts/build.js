@@ -58,6 +58,7 @@ async function generateUsage(data) {
     assert.notEqual(startMarkIndex, -1);
     assert.notEqual(endMarkIndex, -1);
     const usageContent = outdent`
+      \`\`\`
       import {${data.map(({ id }) => id)}} from '@prettier/html-tags'
 
       ${data
@@ -69,6 +70,7 @@ async function generateUsage(data) {
             `,
         )
         .join("\n\n")}
+      \`\`\`
     `;
     return outdent`
       ${readmeContent.slice(0, startMarkIndex + START_MARK.length)}
