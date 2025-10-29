@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import * as cheerio from 'cheerio';
-import { getText, uniqueAndSortTags } from './utilities.js';
+import {getText, uniqueAndSortTags} from './utilities.js';
 
 async function getHtmlVoidTagsFromHtmlSpecificationParsing() {
   const text = await getText(

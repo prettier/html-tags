@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import * as cheerio from 'cheerio';
-import { getText, uniqueAndSortTags } from './utilities.js';
+import {getText, uniqueAndSortTags} from './utilities.js';
 
 async function getHtmlTagsFromHtmlSpecification() {
   const text = await getText([
@@ -85,7 +85,7 @@ async function getHtmlTagsFromW3c() {
     'https://cdn.jsdelivr.net/gh/w3c/elements-of-html/elements.json',
   ]);
 
-  const elements = JSON.parse(text).map(({ element }) => element);
+  const elements = JSON.parse(text).map(({element}) => element);
   assert.notEqual(elements.length, 0);
 
   return elements.filter((tagName) => /^(?:[a-z]+|h[123456])$/.test(tagName));

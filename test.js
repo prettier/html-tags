@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { htmlTags, htmlVoidTags } from './index.js';
+import {htmlTags, htmlVoidTags} from './index.js';
 
 test('HTML Tags', () => {
   assert.ok(Array.isArray(htmlTags));

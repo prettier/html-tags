@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import { outdent } from 'outdent';
+import {outdent} from 'outdent';
 import getHtmlTags from './get-html-tags.js';
 import getHtmlVoidTags from './get-html-void-tags.js';
 import {
@@ -15,7 +15,7 @@ import {
 
 async function generateDataFiles(data) {
   await Promise.all(
-    data.map(({ fileBaseName, tags }) =>
+    data.map(({fileBaseName, tags}) =>
       writeJsonFile(new URL(`../${fileBaseName}.json`, import.meta.url), tags),
     ),
   );
@@ -24,8 +24,7 @@ async function generateDataFiles(data) {
 async function generateDefinitionsFile(data) {
   const content = data
     .map(
-      ({ name, id, sample, tags }) => outdent`
-
+      ({name, id, sample, tags}) => outdent`
         /**
         List of ${name}.
 
@@ -40,7 +39,6 @@ async function generateDefinitionsFile(data) {
         export const ${id}: readonly [
         ${tags.map((tag) => `  '${tag}',`).join('\n')}
         ];
-
       `,
     )
     .join('\n\n');
@@ -58,12 +56,13 @@ async function generateUsage(data) {
     assert.notEqual(startMarkIndex, -1);
     assert.notEqual(endMarkIndex, -1);
     const usageContent = outdent`
+
       \`\`\`
-      import {${data.map(({ id }) => id).join(', ')}} from '@prettier/html-tags'
+      import {${data.map(({id}) => id).join(', ')}} from '@prettier/html-tags'
 
       ${data
         .map(
-          ({ id, sample }) =>
+          ({id, sample}) =>
             outdent`
               console.log(${id})
               //=> ${sample}
@@ -71,6 +70,7 @@ async function generateUsage(data) {
         )
         .join('\n\n')}
       \`\`\`
+
     `;
     return outdent`
       ${readmeContent.slice(0, startMarkIndex + START_MARK.length)}
@@ -83,7 +83,7 @@ async function generateUsage(data) {
 async function generateIndexJsonFile(data) {
   await writeJsonFile(
     new URL(`../index.json`, import.meta.url),
-    Object.fromEntries(data.map(({ id, tags }) => [id, tags])),
+    Object.fromEntries(data.map(({id, tags}) => [id, tags])),
   );
 }
 
@@ -93,7 +93,7 @@ async function generateIndexFile(data) {
     outdent`
       ${data
         .map(
-          ({ id, fileBaseName }) => outdent`
+          ({id, fileBaseName}) => outdent`
             export {default as ${id}} from './${fileBaseName}.json' with {type: 'json'}
           `,
         )
@@ -114,7 +114,7 @@ async function updatePackageJson(data) {
           default: './index.js',
         },
         ...Object.fromEntries(
-          data.map(({ fileBaseName }) => [
+          data.map(({fileBaseName}) => [
             `./${fileBaseName}`,
             `./${fileBaseName}.json`,
           ]),
@@ -124,7 +124,7 @@ async function updatePackageJson(data) {
         'index.js',
         'index.json',
         'index.d.ts',
-        ...data.map(({ fileBaseName }) => `${fileBaseName}.json`),
+        ...data.map(({fileBaseName}) => `${fileBaseName}.json`),
       ],
     }),
   );
@@ -140,7 +140,7 @@ const data = await Promise.all(
       name: 'HTML void tags',
       getData: getHtmlVoidTags,
     },
-  ].map(async ({ name, getData }) => {
+  ].map(async ({name, getData}) => {
     const tags = await getData();
 
     return {

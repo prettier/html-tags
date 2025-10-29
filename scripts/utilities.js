@@ -80,7 +80,7 @@ function formatTagsSample(tags) {
 
 async function writeFile(file, content) {
   const directory = new URL('./', file);
-  await fs.mkdir(directory, { recursive: true });
+  await fs.mkdir(directory, {recursive: true});
   return fs.writeFile(file, content + '\n');
 }
 
