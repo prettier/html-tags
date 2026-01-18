@@ -29,7 +29,7 @@ async function generateDefinitionsFile(data) {
         List of ${name}.
 
         @example
-        \`\`\`
+        \`\`\`js
         import {${id}} from '@prettier/html-tags'
 
         console.log(${id})
@@ -57,8 +57,10 @@ async function generateUsage(data) {
     assert.notEqual(endMarkIndex, -1)
     const usageContent = outdent`
 
-      \`\`\`
-      import {${data.map(({id}) => id).join(', ')}} from '@prettier/html-tags'
+      \`\`\`js
+      import {
+        ${data.map(({id}) => id).join(', ')}
+      } from '@prettier/html-tags'
 
       ${data
         .map(
@@ -72,11 +74,11 @@ async function generateUsage(data) {
       \`\`\`
 
     `
-    return outdent`
-      ${readmeContent.slice(0, startMarkIndex + START_MARK.length)}
-      ${usageContent}
-      ${readmeContent.slice(endMarkIndex)}
-    `.trimEnd()
+    return [
+      readmeContent.slice(0, startMarkIndex + START_MARK.length),
+      usageContent,
+      readmeContent.slice(endMarkIndex),
+    ].join('\n')
   })
 }
 
@@ -94,7 +96,9 @@ async function generateIndexFile(data) {
       ${data
         .map(
           ({id, fileBaseName}) => outdent`
-            export {default as ${id}} from './${fileBaseName}.json' with {type: 'json'}
+            export {
+              default as ${id}
+            } from './${fileBaseName}.json' with {type: 'json'}
           `,
         )
         .join('\n')}

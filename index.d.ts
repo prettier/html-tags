@@ -2,11 +2,11 @@
 List of HTML tags.
 
 @example
-```
+```js
 import {htmlTags} from '@prettier/html-tags'
 
 console.log(htmlTags)
-//=> ['a', 'abbr', 'acronym', …]
+//=> ['a', 'abbr', 'acronym', ... 147 more items]
 ```
 */
 export const htmlTags: readonly [
@@ -166,11 +166,11 @@ export const htmlTags: readonly [
 List of HTML void tags.
 
 @example
-```
+```js
 import {htmlVoidTags} from '@prettier/html-tags'
 
 console.log(htmlVoidTags)
-//=> ['area', 'base', 'basefont', …]
+//=> ['area', 'base', 'basefont', ... 17 more items]
 ```
 */
 export const htmlVoidTags: readonly [

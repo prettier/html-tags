@@ -23,14 +23,14 @@ yarn add @prettier/html-tags
 
 <!-- Usage start -->
 
-```
+```js
 import {htmlTags, htmlVoidTags} from '@prettier/html-tags'
 
 console.log(htmlTags)
-//=> ['a', 'abbr', 'acronym', …]
+//=> ['a', 'abbr', 'acronym', ... 147 more items]
 
 console.log(htmlVoidTags)
-//=> ['area', 'base', 'basefont', …]
+//=> ['area', 'base', 'basefont', ... 17 more items]
 ```
 
 <!-- Usage end -->

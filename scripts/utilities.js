@@ -1,4 +1,6 @@
 import fs from 'node:fs/promises'
+import {inspect} from 'node:util'
+import writePrettierFile from 'write-prettier-file'
 
 const CACHE_DIRECTORY = new URL('../.cache/', import.meta.url)
 
@@ -34,7 +36,7 @@ async function getTextFromUrl(url) {
 
   const text = await response.text()
 
-  writeFile(cacheFile, text)
+  writeFile(cacheFile, text, /* pretty */ false)
 
   return text
 }
@@ -70,18 +72,16 @@ function toDefinitionName(name) {
 }
 
 function formatTagsSample(tags) {
-  const samples = tags.slice(0, 3).map((tag) => `'${tag}'`)
-  if (tags.length > 3) {
-    samples.push('…')
-  }
-
-  return `[${samples.join(', ')}]`
+  return inspect(tags, {maxArrayLength: 3})
+    .replaceAll('\n', '')
+    .replaceAll(/(?<=\[) |  | (?=])/g, '')
+    .replaceAll(/,\s?/g, ', ')
 }
 
-async function writeFile(file, content) {
+async function writeFile(file, content, pretty = true) {
   const directory = new URL('./', file)
   await fs.mkdir(directory, {recursive: true})
-  return fs.writeFile(file, content + '\n')
+  return pretty ? writePrettierFile(file, content) : fs.writeFile(file, content)
 }
 
 async function updateFile(file, process) {
