@@ -5,7 +5,7 @@ import {htmlTags, htmlVoidTags} from './index.js'
 test('Main', () => {
   for (const {name, tags} of [
     {name: 'HTML Tags', tags: htmlTags},
-    {name: 'HTML Void Tags', tags: htmlTags},
+    {name: 'HTML Void Tags', tags: htmlVoidTags},
   ]) {
     assert.ok(Array.isArray(tags), `${name} should be an array.`)
     assert.equal(
