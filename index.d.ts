@@ -6,7 +6,7 @@ List of HTML tags.
 import {htmlTags} from '@prettier/html-tags'
 
 console.log(htmlTags)
-//=> ['a', 'abbr', 'acronym', ... 147 more items]
+//=> ['a', 'abbr', 'acronym', ... 148 more items]
 ```
 */
 export const htmlTags: readonly [
@@ -62,6 +62,7 @@ export const htmlTags: readonly [
   'form',
   'frame',
   'frameset',
+  'geolocation',
   'h1',
   'h2',
   'h3',
