@@ -3,7 +3,7 @@
   dependencyDashboardApproval: true,
   postUpdateOptions: ['yarnDedupeHighest'],
   extends: [':pinDependencies', ':pinDevDependencies'],
-  lockFileMaintenance: { enabled: true },
+  lockFileMaintenance: {enabled: true},
   packageRules: [
     {
       groupName: 'non-major dev-dependencies',

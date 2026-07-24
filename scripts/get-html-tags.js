@@ -25,13 +25,11 @@ async function getHtmlTagsFromMdn() {
   assert.notEqual(elements.length, 0)
 
   return Array.from(elements, (element) => {
-    if (
-      !(
-        element.name === 'code' ||
-        (element.name === 'a' &&
-          element.attribs.href.includes('/docs/Web/HTML/Reference/Elements/'))
-      )
-    ) {
+    if (!(
+      element.name === 'code' ||
+      (element.name === 'a' &&
+        element.attribs.href.includes('/docs/Web/HTML/Reference/Elements/'))
+    )) {
       return
     }
 
